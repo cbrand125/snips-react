@@ -1,0 +1,26 @@
+#hero {
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.5)
+    ),
+    url(/images/cleandesk.jpg);
+  background-size: cover;
+  background-position: 60%;
+  height: 50vh;
+  min-height: 300px;
+  padding: 50px;
+  text-align: center;
+  color: black;
+}
+
+#hero h1 {
+  font-size: 4vw;
+  text-shadow: -0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff,
+    0.5px 0.5px 0 #fff;
+}
+
+#hero h3 {
+  font-size: 2vw;
+  text-shadow: -0.5px -0.5px 0 #fff, 0.5px -0.5px 0 #fff, -0.5px 0.5px 0 #fff,
+    0.5px 0.5px 0 #fff;
+}
