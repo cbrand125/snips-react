@@ -1,82 +1,60 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import '../styles/style.css';
-import SnipList from './SnipList';
-import SearchBar from './SearchBar';
-import SnipForm from './SnipForm';
+import Header from './Header';
+import Home from './Home';
+import About from './About';
+import Account from './Account';
+import Snippets from './Snippets';
+import FourOFour from './FourOFour';
+import SignupForm from './SignupForm';
+import LoginForm from './LoginForm';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      snippets: []
-    };
+    this.state = { message: '' };
   }
 
-  async componentDidMount() {
-    const { data } = await axios.get('http://localhost:5000/api/snippets');
-    this.setState({ snippets: data });
-  }
+  insertAuthor = async author =>
+    axios.post('http://localhost:5000/api/signup', author);
 
-  fetchSnippets = async text => {
-    const { data } = await axios.get('http://localhost:5000/api/snippets');
-
-    if (!text) {
-      this.setState({ snippets: data });
-      return;
-    }
-
-    function stringsMatch(first, second) {
-      if (!first) return false;
-      if (!second) return false;
-
-      return first.toUpperCase().includes(second.toUpperCase());
-    }
-
-    const filteredSnips = data.filter(
-      snippet =>
-        stringsMatch(snippet.title, text) ||
-        stringsMatch(snippet.description, text) ||
-        stringsMatch(snippet.language, text) ||
-        stringsMatch(snippet.code, text)
+  loginAuthor = async author => {
+    const { data } = await axios.patch(
+      'http://localhost:5000/api/login',
+      author
     );
-
-    this.setState({ snippets: filteredSnips });
-  };
-
-  insertSnippet = async snippet => {
-    await axios.post('http://localhost:5000/api/snippets', snippet);
-    const { data } = await axios.get('http://localhost:5000/api/snippets');
-    this.setState({ snippets: data });
+    this.setState({ message: data.message });
   };
 
   render() {
     return (
-      <React.Fragment>
-        <header>
-          <nav>
-            <ul>
-              <li>
-                <a href="/">Home</a>
-              </li>
-              <li>
-                <a href="/pages/about.html">About</a>
-              </li>
-              <li>
-                <a href="/pages/snippets.html">Snippets</a>
-              </li>
-              <li>
-                <a href="/pages/account.html">Account</a>
-              </li>
-            </ul>
-          </nav>
-        </header>
-        <SearchBar onSearch={this.fetchSnippets} />
-        <SnipForm onSubmit={this.insertSnippet} />
-        <SnipList snippets={this.state.snippets} />
-      </React.Fragment>
+      <Router>
+        <Header />
+        <Switch>
+          <Route path="/" exact render={() => <Home />} />
+          <Route path="/about" exact render={() => <About />} />
+          <Route path="/account" exact render={() => <Account />} />
+          <Route path="/snippets" render={() => <Snippets />} />
+          <Route
+            path="/signup"
+            render={() => <SignupForm onSubmit={this.insertAuthor} />}
+          />
+          <Route
+            path="/login"
+            render={() => (
+              <LoginForm
+                onSubmit={this.loginAuthor}
+                success={this.state.message}
+              />
+            )}
+          />
+          <Route render={() => <FourOFour />} />
+        </Switch>
+      </Router>
     );
   }
 }

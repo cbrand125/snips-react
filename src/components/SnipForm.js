@@ -36,6 +36,7 @@ export default class SnipForm extends Component {
             <label className="halfwidth">
               Title
               <input
+                name="title"
                 type="text"
                 value={this.state.title}
                 onChange={event => this.handleChange(event, 'title')}

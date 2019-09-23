@@ -8,6 +8,8 @@
 @import 'search.css';
 @import 'snippets.css';
 @import 'snipForm.css';
+@import 'signupForm.css';
+@import 'loginForm.css';
 
 html {
   font-family: 'Montserrat', sans-serif;
